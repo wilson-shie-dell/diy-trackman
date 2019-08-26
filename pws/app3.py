@@ -9,6 +9,8 @@ from pymongo import MongoClient
 import pymongo
 from flask_restful import Resource, Api
 
+import random
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -46,23 +48,40 @@ def view(uid):
     return render_template('view.html', title='Raspberry Pi Trackman', cursor=cursor)
 
 
+@app.route('/delete/<int:uid>')
+def delete(uid):
+
+    # Delete entry
+    db.trackman.delete_one({"uid":uid})
+
+    return render_template('delete.html', title='Raspberry Pi Trackman')
+
 
 class NewEntry(Resource):
     def get(self):
 
         uid = int(time.time())
 
+        # Temporary Random data generator
+        initial_speed = round(random.uniform(1.0, 2.0), 2)
+        test_data = []
+        while initial_speed >= 0.0:
+            test_data.append({"time":uid, "speed":initial_speed})
+            uid += 1
+            initial_speed = round(initial_speed - 0.2, 2)
+
         # Entry needed in DB
         # unique, time, speed,
         sample_entry = {
             "uid" : uid,
-            "data" : [
-                # { "time" : time.time(), "speed" : 1.5 },
-                { "time" : 1566615167, "speed" : 1.5 },
-                { "time" : 1566615168, "speed" : 1.3 },
-                { "time" : 1566615169, "speed" : 1.1 },
-                { "time" : 1566615170, "speed" : 0.9 },
-            ]
+            # "data" : [
+            #     # { "time" : time.time(), "speed" : 1.5 },
+            #     { "time" : 1566615167, "speed" : 1.5 },
+            #     { "time" : 1566615168, "speed" : 1.3 },
+            #     { "time" : 1566615169, "speed" : 1.1 },
+            #     { "time" : 1566615170, "speed" : 0.9 },
+            # ]
+            "data" : test_data,
         }
 
         # Insert entry

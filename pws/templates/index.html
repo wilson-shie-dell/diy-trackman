@@ -14,7 +14,10 @@
 		{% for each_entry in cursor %}
 			<tr>
 				<td> {{ each_entry.uid }} </td>
-				<td> <a href="{{ url_for('view', uid=each_entry.uid) }}">view</a> </td>
+				<td>
+					<a href="{{ url_for('view', uid=each_entry.uid) }}">view</a> &nbsp;
+					<a href="{{ url_for('delete', uid=each_entry.uid) }}">delete</a> &nbsp;
+				</td>
 			<tr>
 		{% endfor %}
 
