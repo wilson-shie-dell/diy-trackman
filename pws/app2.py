@@ -5,6 +5,7 @@ import uuid
 import time
 import json
 from flask import Flask
+from flask import render_template
 from pymongo import MongoClient
 import pymongo
 
@@ -44,34 +45,12 @@ def mainmenu():
     }
 
     # Insert entry
-    db.trackman.insert_one(sample_entry)
+    # db.trackman.insert_one(sample_entry)
 
     # Retrieve all DB entries
     cursor = db.trackman.find()
 
-    # HTML start
-    html = """"
-    <html>
-        <head>
-        </head>
-        <body>
-            <h1><u>RPi Tackman - Top Page</u></h1>
-            <br>
-            Hi, I'm GUID: {}<br>
-    """.format(my_uuid)
-
-    for each_entry in cursor:
-        html = html + str(each_entry)
-
-    close_html = """
-        </body>
-    </html>
-    """
-
-    response = html + close_html
-
-    return response
-
+    return render_template('index.html', title='Raspberry Pi Trackman', cursor=cursor)
 
 if __name__ == "__main__":
 	app.run(debug=False,host='0.0.0.0', port=int(os.getenv('PORT', '5000')))
