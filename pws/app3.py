@@ -37,6 +37,16 @@ def mainmenu():
     return render_template('index.html', title='Raspberry Pi Trackman', cursor=cursor)
 
 
+@app.route('/view/<int:uid>')
+def view(uid):
+
+    # Retrieve single entry
+    cursor = db.trackman.find({"uid":uid})
+
+    return render_template('view.html', title='Raspberry Pi Trackman', cursor=cursor)
+
+
+
 class NewEntry(Resource):
     def get(self):
 

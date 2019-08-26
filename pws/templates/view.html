@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+import date
+
 {% block content %}
 	<h2> Data Entries </h2>
 
@@ -7,15 +9,19 @@
 		<thead>
 			<tr>
 				<th scope="col">uid</th>
-				<th scope="col">action</th>
+				<th scope="col">time</th>
+				<th scope="col">speed</th>
 			</tr>
 		</thead>
 
 		{% for each_entry in cursor %}
+			{% for each_data in each_entry.data %}
 			<tr>
 				<td> {{ each_entry.uid }} </td>
-				<td> <a href="{{ url_for('view', uid=each_entry.uid) }}">view</a> </td>
+				<td> {{ each_data.time }} </td>
+				<td> {{ each_data.speed }} </td>
 			<tr>
+			{% endfor %}
 		{% endfor %}
 
 	</table>
